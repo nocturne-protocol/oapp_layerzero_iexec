@@ -25,6 +25,7 @@ Before running the scripts, ensure you have:
    ```
 
 2. **PocoOApp contracts deployed** on your source chain and Arbitrum Sepolia
+
    ```bash
    cd ../layerzero
    npm run lz:deploy
@@ -165,6 +166,25 @@ tsx src/matchorder.ts baseSepolia
       │                                                            │
       │                                                       ✅ Deal created
 ```
+
+## Example Transactions
+
+Here are real examples of cross-chain TEE confidential computing task triggering via LayerZero:
+
+### Successful Cross-Chain Executions
+
+- **[Transaction 1](https://testnet.layerzeroscan.com/tx/0xcd6beb1de6d15e540ed466b5a79505c9ab406ba03c0fb837de211d8fa5354c9f)** - Cross-chain matchOrders from source chain to Arbitrum Sepolia
+  - Demonstrates TEE confidential computing task creation via LayerZero messaging
+  
+- **[Transaction 2](https://testnet.layerzeroscan.com/tx/0x61533221f9002971e799cd96287caa1c9abef561e95172ef21f6f088ad063865)** - Another successful cross-chain TEE task execution
+  - Shows the full LayerZero message flow from router to receiver
+
+You can inspect these transactions on [LayerZero Testnet Scan](https://testnet.layerzeroscan.com/) to see:
+
+- Message delivery status
+- Source and destination chains
+- Gas consumption
+- Execution traces
 
 ## Troubleshooting
 

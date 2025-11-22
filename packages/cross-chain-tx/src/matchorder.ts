@@ -32,7 +32,7 @@ import {
 } from "viem";
 import { sepolia, baseSepolia } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
-import { loadConfig, getChainConfig, type Config, type ChainConfig } from "./config.js";
+import { loadConfig, getChainConfig } from "./config.js";
 // Import ABI directly from layerzero package artifacts
 import PocoOAppArtifact from "../../layerzero/artifacts/contracts/PocoOApp.sol/PocoOApp.json" assert { type: "json" };
 
@@ -100,7 +100,10 @@ function getViemChain(chainName: string): Chain {
 function getRpcUrl(chainName: string): string {
   switch (chainName) {
     case "sepolia":
-      return process.env.SEPOLIA_RPC_URL || "https://gateway.tenderly.co/public/sepolia";
+      return (
+        process.env.SEPOLIA_RPC_URL ||
+        "https://gateway.tenderly.co/public/sepolia"
+      );
     case "baseSepolia":
       return process.env.BASE_SEPOLIA_RPC_URL || "https://sepolia.base.org";
     default:
@@ -124,13 +127,15 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n🚀 Starting cross-chain matchOrders from ${sourceChain} to Arbitrum Sepolia...\n`);
+  console.log(
+    `\n🚀 Starting cross-chain matchOrders from ${sourceChain} to Arbitrum Sepolia...\n`
+  );
 
   // ==================================================================
   // STEP 1: Load configuration
   // ==================================================================
   console.log("📋 Loading configuration...");
-  
+
   const config = loadConfig();
   const sourceChainConfig = getChainConfig(sourceChain, config);
   const arbitrumSepoliaConfig = getChainConfig("arbitrumSepolia", config);
@@ -202,7 +207,9 @@ async function main() {
   console.log(`  PoCo Hub Address: ${iexecDomain.hubAddress}`);
 
   const expectedPocoAddress = arbitrumSepoliaConfig.pocoAddress || "";
-  if (iexecDomain.hubAddress.toLowerCase() !== expectedPocoAddress.toLowerCase()) {
+  if (
+    iexecDomain.hubAddress.toLowerCase() !== expectedPocoAddress.toLowerCase()
+  ) {
     throw new Error(
       `❌ iExec SDK is using wrong PoCo contract!\n` +
         `  SDK expects: ${iexecDomain.hubAddress}\n` +
@@ -211,14 +218,20 @@ async function main() {
     );
   }
 
-  console.log(`  ✅ iExec SDK will sign orders with correct PoCo contract (chain 421614)`);
-  console.log(`  📝 EIP712 domain separator will be automatically computed by iExec SDK\n`);
+  console.log(
+    `  ✅ iExec SDK will sign orders with correct PoCo contract (chain 421614)`
+  );
+  console.log(
+    `  📝 EIP712 domain separator will be automatically computed by iExec SDK\n`
+  );
 
   // ==================================================================
   // STEP 3: Create and sign iExec orders
   // ==================================================================
   console.log("📝 Creating and signing iExec orders...");
-  console.log("⚠️  WARNING: This may take a while if using public RPC endpoints...\n");
+  console.log(
+    "⚠️  WARNING: This may take a while if using public RPC endpoints...\n"
+  );
 
   const params: MatchOrderParams = {
     appAddress: "0x0117a9955f868a81aa7ba54cb440edee993accab" as Address,
@@ -238,63 +251,89 @@ async function main() {
   const signedApporder = await iexec.order.signApporder(apporder);
   console.log("✓ App order signed\n");
 
-  console.log("Creating dataset order...");
-  const datasetorder = await iexec.order.createDatasetorder({
+  // Create empty dataset order (no actual dataset - just for encoding)
+  console.log("Creating empty dataset order...");
+  const signedDatasetorder = {
     dataset: "0x0000000000000000000000000000000000000000" as Address,
     datasetprice: 0,
     volume: params.volume || 1,
-    tag: params.tag || [],
-  });
-  const signedDatasetorder = await iexec.order.signDatasetorder(datasetorder);
-  console.log("✓ Dataset order signed\n");
+    tag: "0x0000000000000000000000000000000000000000000000000000000000000000" as `0x${string}`,
+    apprestrict: "0x0000000000000000000000000000000000000000" as Address,
+    workerpoolrestrict: "0x0000000000000000000000000000000000000000" as Address,
+    requesterrestrict: "0x0000000000000000000000000000000000000000" as Address,
+    salt: "0x0000000000000000000000000000000000000000000000000000000000000000" as `0x${string}`,
+    sign: "0x" as `0x${string}`,
+  };
+  console.log("✓ Empty dataset order created\n");
 
-  console.log("Creating workerpool order...");
-  const workerpoolorder = await iexec.order.createWorkerpoolorder({
-    workerpool: "0x0000000000000000000000000000000000000000" as Address,
-    workerpoolprice: 0,
-    volume: params.volume || 1,
-    tag: params.tag || [],
+  // Fetch workerpool order from marketplace
+  console.log("🏊 Fetching workerpool order from marketplace...");
+  const workerpoolOrderbook = await iexec.orderbook.fetchWorkerpoolOrderbook({
+    minTag: params.tag || [],
+    maxTag: params.tag || [],
     category: params.category || 0,
+    minVolume: 1,
   });
-  const signedWorkerpoolorder =
-    await iexec.order.signWorkerpoolorder(workerpoolorder);
-  console.log("✓ Workerpool order signed\n");
 
-  console.log("Creating request order...");
+  if (!workerpoolOrderbook || workerpoolOrderbook.count === 0) {
+    throw new Error(
+      `No workerpool order found for category ${
+        params.category || 0
+      } with tags ${JSON.stringify(params.tag || [])}. ` +
+        `Try a different category or check the marketplace on Arbitrum Sepolia.`
+    );
+  }
+
+  const publishedWorkerpoolorder = workerpoolOrderbook.orders[0];
+  const workerpoolorder = publishedWorkerpoolorder.order;
+  console.log(`✓ Workerpool order found: ${workerpoolorder.workerpool}`);
+  console.log(`  Price: ${workerpoolorder.workerpoolprice} nRLC`);
+  console.log(`  Remaining volume: ${publishedWorkerpoolorder.remaining}`);
+  console.log(`  Category: ${workerpoolorder.category}`);
+  console.log(`  Tag: ${workerpoolorder.tag}\n`);
+
+  console.log("📝 Creating and signing request order...");
   const requestorder = await iexec.order.createRequestorder({
     app: params.appAddress,
     appmaxprice: Number(params.appprice || 0n),
     dataset: "0x0000000000000000000000000000000000000000" as Address,
     datasetmaxprice: 0,
-    workerpool: "0x0000000000000000000000000000000000000000" as Address,
-    workerpoolmaxprice: 0,
+    workerpool: workerpoolorder.workerpool,
+    workerpoolmaxprice: Number(workerpoolorder.workerpoolprice),
     requester: account.address,
     volume: params.volume || 1,
     tag: params.tag || [],
-    category: params.category || 0,
+    category: Number(workerpoolorder.category),
     trust: 0,
     beneficiary: account.address,
     callback: "0x0000000000000000000000000000000000000000" as Address,
     params: JSON.stringify({ iexec_args: "" }),
   });
+  console.log(`  Requester set to: ${account.address}`);
   const signedRequestorder = await iexec.order.signRequestorder(requestorder);
   console.log("✓ Request order signed\n");
 
   // Hash the request order after signing (salt is added during signing)
-  const requestorderHash = await iexec.order.hashRequestorder(signedRequestorder);
+  const requestorderHash = await iexec.order.hashRequestorder(
+    signedRequestorder
+  );
 
   // Log all order details for debugging
   const allOrders = {
     apporder: signedApporder,
     datasetorder: signedDatasetorder,
-    workerpoolorder: signedWorkerpoolorder,
+    workerpoolorder: workerpoolorder,
     requestorder: signedRequestorder,
   };
 
   console.log("\n📊 Order Details:");
   console.log(`  App:              ${allOrders.apporder.app}`);
-  console.log(`  Dataset:          ${allOrders.datasetorder.dataset}`);
-  console.log(`  Workerpool:       ${allOrders.workerpoolorder.workerpool}`);
+  console.log(
+    `  Dataset:          ${allOrders.datasetorder.dataset} (empty - no dataset)`
+  );
+  console.log(
+    `  Workerpool:       ${allOrders.workerpoolorder.workerpool} (from marketplace)`
+  );
   console.log(`  Request hash:     ${requestorderHash}`);
   console.log(`  Request requester: ${allOrders.requestorder.requester}\n`);
 
@@ -459,8 +498,12 @@ async function main() {
     console.log(`  Gas used: ${receipt.gasUsed}\n`);
 
     console.log("🔗 View transaction:");
-    console.log(`  Source chain (${sourceChain}): https://${viemChain.blockExplorers?.default.url}/tx/${hash}`);
-    console.log(`  LayerZero Scan: https://testnet.layerzeroscan.com/tx/${hash}\n`);
+    console.log(
+      `  Source chain (${sourceChain}): https://${viemChain.blockExplorers?.default.url}/tx/${hash}`
+    );
+    console.log(
+      `  LayerZero Scan: https://testnet.layerzeroscan.com/tx/${hash}\n`
+    );
 
     console.log(
       "⏳ The cross-chain message will be delivered by LayerZero relayers."
