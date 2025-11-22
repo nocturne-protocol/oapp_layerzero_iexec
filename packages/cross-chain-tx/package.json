@@ -1,0 +1,26 @@
+{
+  "name": "@iexec/cross-chain-tx",
+  "author": "iExec",
+  "license": "Apache-2.0",
+  "version": "0.1.0",
+  "description": "Cross-chain transaction tools for iExec using LayerZero",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "matchorder:sepolia": "tsx src/matchorder.ts sepolia",
+    "matchorder:base-sepolia": "tsx src/matchorder.ts baseSepolia"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "iexec": "^8.22.0",
+    "viem": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.3"
+  }
+}
+
