@@ -4,6 +4,7 @@
 pragma solidity ^0.8.22;
 
 import {OApp, Origin, MessagingFee, MessagingReceipt} from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
+import {OAppOptionsType3} from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OAppOptionsType3.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IPocoOApp} from "./interfaces/IPocoOApp.sol";
 import {PocoMessageLib} from "./libraries/PocoMessageLib.sol";
@@ -23,7 +24,7 @@ import {PocoMessageLib} from "./libraries/PocoMessageLib.sol";
  *
  * Based on LayerZero OApp standard: https://docs.layerzero.network/v2/developers/evm/oapp/overview
  */
-contract PocoOApp is OApp, IPocoOApp {
+contract PocoOApp is OApp, OAppOptionsType3, IPocoOApp {
     /// @notice Operating mode of the contract
     enum Mode {
         Router,   // Routes calls to Arbitrum (non-Arbitrum chains)

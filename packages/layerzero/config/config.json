@@ -5,7 +5,7 @@
       "lzEndpointAddress": "0x6EDCE65403992e310A62460808c4b910D972f10f",
       "lzEndpointId": 40161,
       "destinationChain": "arbitrumSepolia",
-      "pocoOAppAddress": "0xc9919b59BCE05A48e916ab1613C9053d103B72aF",
+      "pocoOAppAddress": "0x85455eFd48987C21C054F6583cc30c5839116394",
       "pocoOAppCreatexSalt": "0x706f636f6f617070000000000000000000000000000000000000000000000001"
     },
     "baseSepolia": {
@@ -13,7 +13,7 @@
       "lzEndpointAddress": "0x6EDCE65403992e310A62460808c4b910D972f10f",
       "lzEndpointId": 40245,
       "destinationChain": "arbitrumSepolia",
-      "pocoOAppAddress": "",
+      "pocoOAppAddress": "0x3E577D754bF662F1Ad0d20F62A0E99139C3C3B62",
       "pocoOAppCreatexSalt": "0x706f636f6f617070000000000000000000000000000000000000000000000001"
     },
     "arbitrumSepolia": {
@@ -21,7 +21,7 @@
       "lzEndpointAddress": "0x6EDCE65403992e310A62460808c4b910D972f10f",
       "lzEndpointId": 40231,
       "pocoAddress": "0xB2157BF2fAb286b2A4170E3491Ac39770111Da3E",
-      "pocoOAppAddress": "0x8822cDbeC9649a38D9FD43170af07716E550E5f9",
+      "pocoOAppAddress": "0x4D9C0d72741D4E67aF5580761e41dAb565Aa449E",
       "pocoOAppCreatexSalt": "0x706f636f6f617070000000000000000000000000000000000000000000000001"
     }
   }

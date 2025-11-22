@@ -80,6 +80,11 @@ const config = {
   sourcify: {
     enabled: false, // Disable sourcify verification
   },
+  namedAccounts: {
+    deployer: {
+      default: 0, // First account from accounts array
+    },
+  },
 };
 
 export default config;

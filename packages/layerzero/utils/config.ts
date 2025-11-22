@@ -107,3 +107,21 @@ export function getReceivers(config: Config): Array<[string, ChainConfig]> {
   );
 }
 
+/**
+ * Validate chain configuration
+ */
+export function validateChainConfig(chainConfig: ChainConfig): void {
+  if (!chainConfig.lzEndpointAddress) {
+    throw new Error("lzEndpointAddress is required");
+  }
+  if (!chainConfig.lzEndpointId) {
+    throw new Error("lzEndpointId is required");
+  }
+  if (chainConfig.mode === "Router" && !chainConfig.destinationChain) {
+    throw new Error("destinationChain is required for Router mode");
+  }
+  if (chainConfig.mode === "Receiver" && !chainConfig.pocoAddress) {
+    throw new Error("pocoAddress is required for Receiver mode");
+  }
+}
+
