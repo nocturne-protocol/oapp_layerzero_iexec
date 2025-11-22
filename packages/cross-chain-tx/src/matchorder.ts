@@ -221,7 +221,7 @@ async function main() {
   console.log("⚠️  WARNING: This may take a while if using public RPC endpoints...\n");
 
   const params: MatchOrderParams = {
-    appAddress: "0x00000000000000000000000000000000000000000" as Address,
+    appAddress: "0x0117a9955f868a81aa7ba54cb440edee993accab" as Address,
     appprice: 0n,
     volume: 1,
     tag: ["tee", "scone"],
