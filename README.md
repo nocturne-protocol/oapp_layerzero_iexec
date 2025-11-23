@@ -197,51 +197,6 @@ Here are real examples of successful cross-chain TEE confidential computing task
 | **TX 1** | Cross-chain matchOrders from source chain to Arbitrum | [View on LayerZero Scan](https://testnet.layerzeroscan.com/tx/0xcd6beb1de6d15e540ed466b5a79505c9ab406ba03c0fb837de211d8fa5354c9f) |
 | **TX 2** | TEE confidential task execution via LayerZero | [View on LayerZero Scan](https://testnet.layerzeroscan.com/tx/0x61533221f9002971e799cd96287caa1c9abef561e95172ef21f6f088ad063865) |
 
-### What You Can See in These Transactions
-
-On [LayerZero Testnet Scan](https://testnet.layerzeroscan.com/):
-
-- ✅ **Message Status** - Delivered, pending, or failed
-- 🔗 **Source & Destination** - Which chains are communicating
-- ⛽ **Gas Consumption** - Fees on both source and destination
-- 📋 **Execution Trace** - Step-by-step message flow
-- 🔐 **DVN Verification** - Which verifiers confirmed the message
-
-## 🎯 Key Events for Subgraph Indexing
-
-The contracts emit specific events designed for easy subgraph integration:
-
-### Router Events (Source Chain)
-
-```solidity
-event CrossChainCallInitiated(
-    uint64 sourceChainId,
-    address indexed caller,
-    bytes4 indexed targetFunction,
-    bytes payload,
-    uint64 nonce
-);
-```
-
-### Receiver Events (Arbitrum)
-
-```solidity
-event CrossChainCallReceived(
-    uint64 sourceChainId,
-    address indexed caller,
-    bytes4 indexed targetFunction,
-    bytes returnData
-);
-
-event CrossChainDealCreated(
-    bytes32 indexed dealId,
-    uint64 indexed sourceChainId,
-    address indexed caller
-);
-```
-
-**`CrossChainDealCreated`** is specifically designed to link a `dealId` to its originating chain and caller for subgraph tracking.
-
 ## 🔧 Configuration
 
 ### Network Configuration
