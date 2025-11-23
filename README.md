@@ -4,15 +4,6 @@ Cross-chain PoCo (Proof-of-Contribution) execution for iExec using LayerZero V2 
 
 This project enables **confidential computing tasks** to be triggered from **any EVM chain** (Sepolia, Base, etc.) and executed on **Arbitrum** where the iExec PoCo protocol is deployed.
 
-## 🌟 Features
-
-- ✅ **Multi-chain Support** - Trigger iExec tasks from Sepolia, Base Sepolia, or any EVM chain
-- ✅ **LayerZero V2** - Secure cross-chain messaging with configurable DVNs
-- ✅ **TEE Support** - Full support for confidential computing (Scone, Gramine, TDX)
-- ✅ **Gas Efficient** - Optimized message encoding and execution
-- ✅ **Type Safe** - Full TypeScript support with Viem
-- ✅ **Event Tracking** - Dedicated events for subgraph indexing
-
 ## 📦 Packages
 
 This monorepo contains two packages:
@@ -340,6 +331,7 @@ iexec/
 ### Adding a New Source Chain
 
 1. **Add chain to `layerzero.config.ts`**:
+
    ```typescript
    const optimismSepoliaContract: OmniPointHardhat = {
      eid: EndpointId.OPTSEP_V2_TESTNET,
@@ -348,11 +340,13 @@ iexec/
    ```
 
 2. **Add pathway configuration**:
+
    ```typescript
    [optimismSepoliaContract, arbitrumSepoliaContract, ...]
    ```
 
 3. **Deploy and wire**:
+
    ```bash
    npm run lz:deploy
    npm run lz:wire
@@ -397,4 +391,3 @@ Apache-2.0
 **Built with ❤️ by iExec**
 
 For questions or support, reach out to [contact@iex.ec](mailto:contact@iex.ec)
-
