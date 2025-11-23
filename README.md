@@ -377,17 +377,3 @@ iexec/
 | Base Sepolia | PocoOApp (Router) | `0x3E577D754bF662F1Ad0d20F62A0E99139C3C3B62` |
 | Arbitrum Sepolia | PocoOApp (Receiver) | `0x49682a0193C856CaaA8B35306ab0A197f2440Ac3` |
 | Arbitrum Sepolia | PoCo Hub | `0xB2157BF2fAb286b2A4170E3491Ac39770111Da3E` |
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-Apache-2.0
-
----
-
-**Built with ❤️ by iExec**
-
-For questions or support, reach out to [contact@iex.ec](mailto:contact@iex.ec)
