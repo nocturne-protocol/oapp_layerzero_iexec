@@ -4,14 +4,6 @@ Cross-chain transaction tools for iExec using LayerZero OApp contracts.
 
 This package provides ESM-compatible scripts for executing cross-chain iExec operations from any supported chain (Sepolia, Base Sepolia) to Arbitrum Sepolia using LayerZero messaging protocol.
 
-## Features
-
-- ✅ **Pure ESM** - Native ES Modules support for clean imports
-- ✅ **iExec SDK Integration** - Uses official iExec SDK for order management
-- ✅ **LayerZero OApp** - Cross-chain messaging via LayerZero V2
-- ✅ **Viem** - Type-safe Ethereum interactions
-- ✅ **TypeScript** - Full type safety with `tsx` (no build step!)
-
 ## Prerequisites
 
 Before running the scripts, ensure you have:
