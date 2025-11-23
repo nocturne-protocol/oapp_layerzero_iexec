@@ -178,30 +178,6 @@ You can inspect these transactions on [LayerZero Testnet Scan](https://testnet.l
 - Gas consumption
 - Execution traces
 
-## Troubleshooting
-
-### Rate Limit Errors
-
-If you get rate limit errors from Tenderly:
-
-- Set a custom RPC URL in `.env` with higher rate limits
-- Use Alchemy, Infura, or your own node
-
-### iExec SDK Timeout
-
-If the script hangs when creating orders:
-
-- Check that you're using a valid RPC URL for Arbitrum Sepolia
-- Ensure the iExec hub is deployed on the target network
-- Verify your app address is correct
-
-### Transaction Fails
-
-- Ensure PocoOApp contracts are deployed and peers are configured
-- Check that your wallet has sufficient ETH on the source chain
-- Verify the app address in `.env` is correct
-- Ensure you're using the correct source chain name (sepolia, baseSepolia)
-
 ## Development
 
 ### Project Structure
