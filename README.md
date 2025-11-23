@@ -353,27 +353,3 @@ iexec/
    ```
 
 4. **Add script support** in `cross-chain-tx/src/matchorder.ts`
-
-## 📚 Resources
-
-### Documentation
-
-- [LayerZero V2 Docs](https://docs.layerzero.network/v2)
-- [iExec Documentation](https://docs.iex.ec/)
-- [Viem Documentation](https://viem.sh/)
-
-### Explorers
-
-- [LayerZero Testnet Scan](https://testnet.layerzeroscan.com/)
-- [Arbitrum Sepolia Explorer](https://sepolia.arbiscan.io/)
-- [Sepolia Etherscan](https://sepolia.etherscan.io/)
-- [Base Sepolia Explorer](https://sepolia.basescan.org/)
-
-### Contracts
-
-| Network | Contract | Address |
-|---------|----------|---------|
-| Sepolia | PocoOApp (Router) | `0x2D90184904B26fbEb1d50e3e0ef73Fb7958BD906` |
-| Base Sepolia | PocoOApp (Router) | `0x3E577D754bF662F1Ad0d20F62A0E99139C3C3B62` |
-| Arbitrum Sepolia | PocoOApp (Receiver) | `0x49682a0193C856CaaA8B35306ab0A197f2440Ac3` |
-| Arbitrum Sepolia | PoCo Hub | `0xB2157BF2fAb286b2A4170E3491Ac39770111Da3E` |
